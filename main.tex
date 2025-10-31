@@ -1,0 +1,170 @@
+\documentclass[a4paper,12pt, oneside]{book}
+
+% Custom macros (from macros.tex
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry} % defines margins
+\usepackage{parskip} % paragraph formatting
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{blindtext}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{amssymb}%
+\usepackage{pifont}%
+\usepackage{floatrow}
+\usepackage{fancyvrb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}       %
+\usepackage{amsthm}
+\usepackage{nicefrac}       %       %
+\usepackage{xspace}         %
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage{placeins}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{soul}
+\usepackage{hhline}
+\usepackage{highlight}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{mdframed}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{enumitem}
+\usepackage{tocloft}
+\input{macros}
+\input{math_commands}
+
+
+\definecolor{casing}{RGB}{242,217,198}
+\definecolor{entity}{RGB}{247,225,147}
+\definecolor{negation}{HTML}{FFCCCC}
+\definecolor{dialect}{HTML}{CCCCFF}
+\definecolor{typos}{rgb}{.90,.92,1}
+\definecolor{amplification}{rgb}{.91,.95,0.83}
+\definecolor{pos}{RGB}{167, 199, 231}
+\definecolor{neg}{RGB}{255, 120, 100}
+\definecolor{rerank_pos}{RGB}{153, 220, 102}
+\definecolor{con}{rgb}{1, 0.9, 0.9}      % Light red for contradiction
+\definecolor{ent}{rgb}{0.9, 1, 0.9}      % Light green for neutral
+\definecolor{neu}{rgb}{0.8, 0.9, 1} 
+\DeclareRobustCommand{\hlpos}[1]{{\sethlcolor{pos}\hl{#1}}}
+\DeclareRobustCommand{\hlneg}[1]{{\sethlcolor{neg}\hl{#1}}}
+\DeclareRobustCommand{\hlrerank}[1]{{\sethlcolor{rerank_pos}\hl{#1}}}
+\DeclareRobustCommand{\hlbase}[1]{{\sethlcolor{lightgray}\hl{#1}}}
+\DeclareRobustCommand{\hlpet}[1]{{\sethlcolor{negation}\hl{#1}}}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+
+\title{DPhil Transfer of Status}
+\author{Jonathan Rystrøm}
+\date{November 2025}
+
+% defining colours
+\definecolor{gray75}{gray}{0.75}
+
+
+% new commands
+\newcommand{\hsp}{\hspace{10pt}}
+
+% formatting
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Large\bfseries}
+\titlespacing{\chapter}{0pt}{-0pt}{1cm} % moves the chapter headings somehow.
+
+% set up fancy headers
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyhead[L]{\textit{\MakeUppercase{\leftmark}}} % format leftmark as italic and uppercase
+\fancyhead[R]{\thepage} % add page number to top right corner of header
+
+% remove the rule under the header
+\renewcommand{\headrulewidth}{0pt}
+
+% custom section mark for headers
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\ #1}{}} % sets section title with numbering
+\renewcommand{\subsectionmark}[1]{} % clears subsection mark to avoid showing it in the header
+
+
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
+\usepackage{wrapfig}
+
+\begin{document}
+\input{sections/titlepage}
+\onehalfspacing
+
+\chapter*{Abstract}
+My research is important and serious. This is because I study social data science, which is a very serious subject. 
+In this proposal, I outline my research plan for the next three years, including my literature review, research questions, methodology, and timeline. 
+I aim to contribute to the field of social data science by addressing key challenges and advancing our understanding of social phenomena through data analysis.
+
+
+\setcounter{tocdepth}{1} % set to 3 to see full content
+
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{18pt}
+
+
+{
+% Remove additional 
+\setlength{\parskip}{0pt} 
+\newpage
+\tableofcontents
+}
+
+\chapter{Introduction}
+\input{sections/introduction}
+
+\clearpage
+\input{sections/lit_review}
+
+\clearpage
+\input{sections/article_01}
+
+\clearpage
+\input{sections/article_02}
+
+\clearpage
+\input{sections/article_03}
+
+\clearpage
+\input{sections/conclusion}
+
+\appendix
+\input{sections/appendix}
+
+\input{sections/timeline}
+
+\newpage
+\bibliographystyle{acl_natbib}
+\bibliography{custom}
+
+
+\end{document}

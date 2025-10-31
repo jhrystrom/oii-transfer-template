@@ -1,0 +1,93 @@
+\ProvidesPackage{highlight}[Cell background highlighting based on user data]
+\RequirePackage{etoolbox}
+\RequirePackage{pgf} % for calculating the values for gradient
+\RequirePackage{xcolor} % enables the use of cellcolor make sure you have [table] option in the document class 
+% Color set related!
+\definecolor{high}{HTML}{a9a9a9}  % the color for the highest number in your data set
+\definecolor{low}{HTML}{dcdcdc}  % the color for the lowest number in your data set
+\newcommand*{\opacity}{100}% here you can change the opacity of the background color!
+%======================================
+% Data set related!
+\newcommand*{\minval}{-0.5}% define the minimum value on your data set
+\newcommand*{\maxval}{1.0}% define the maximum value in your data set!
+%======================================
+% gradient function!
+\newcommand{\gradient}[1]{
+    % The values are calculated linearly between \minval and \maxval
+    \ifdimcomp{#1pt}{>}{\maxval pt}{#1}{
+    \ifdimcomp{#1pt}{<}{\minval pt}{#1}{
+         \pgfmathparse{int(round(100*(#1/(\maxval-\minval))-(\minval*(100/(\maxval-\minval)))))}
+        \xdef\tempa{\pgfmathresult}
+        \cellcolor{high!\tempa!low!\opacity} {#1}
+    }}
+ }
+%======================================
+% gradient function single cell! 
+\newcommand{\gradientcell}[7]{
+    % The values are calculated linearly between \minval and \maxval
+    \ifdimcomp{#1pt}{>}{#3 pt}{#1}{
+    \ifdimcomp{#1pt}{<}{#2 pt}{#1}{
+         \pgfmathparse{int(round(100*(#1/(#3-#2))-(#2*(100/(#3-#2)))))}
+        \xdef\tempa{\pgfmathresult}
+        \cellcolor{#5!\tempa!#4!#6} {\ifnum #7=1\bfseries\fi #1}
+    }}
+ }
+
+\newcommand{\midpointgradientcell}[8]{
+    \ifdimcomp{#1pt}{>}{#4 pt}{
+        \pgfmathparse{round(100*(#1-#4)/(#3-#4))}
+        \xdef\tempa{\pgfmathresult}
+        \cellcolor{#6!\tempa} {\ifnum #8=1\bfseries\fi +#1}
+    }{
+        \ifdimcomp{#1pt}{=}{#4 pt}{
+            \cellcolor{#6!0} {\ifnum #8=1\bfseries\fi +#1}
+        }{
+            \pgfmathparse{int(round(100*(#1-#2)/(#4-#2)))}
+            \xdef\tempa{\pgfmathresult}
+            \pgfmathparse{int(100-\tempa)}
+            \xdef\tempb{\pgfmathresult}
+            \cellcolor{#5!\tempb} {\ifnum #8=1\bfseries\fi #1}
+        }
+    }
+}
+
+\newcommand{\graymidpointgradientcell}[8]{
+    \ifdimcomp{#1pt}{>}{#4 pt}{
+        \pgfmathparse{int(round(100*(#1-#4)/(#3-#4)))}
+        \xdef\tempa{\pgfmathresult}
+        \cellcolor{#6!\tempa} {\ifnum #8=1\bfseries\fi #1}
+    }{
+        \ifdimcomp{#1pt}{=}{#4 pt}{
+            \cellcolor{#6!0} {\ifnum #8=1\bfseries\fi #1}
+        }{
+            \pgfmathparse{int(round(100*(#1-#2)/(#4-#2)))}
+            \xdef\tempa{\pgfmathresult}
+            \pgfmathparse{int(100-\tempa)}
+            \xdef\tempb{\pgfmathresult}
+            \cellcolor{#5!\tempb} {\ifnum #8=1\bfseries\fi #1}
+        }
+    }
+}
+
+% New command for perturbed cells: colors based on drop = (U - P)
+\newcommand{\dropgradientcell}[8]{%
+    % #1: unperturbed value (U)
+    % #2: perturbed value (P) [to be printed in the cell]
+    % #3: minimum drop (use 0)
+    % #4: maximum drop (e.g., 0.24)
+    % #5: low color (e.g., white)
+    % #6: high color (e.g., red)
+    % #7: opacity
+    % #8: bold flag (1 for bold, 0 for normal)
+    \pgfmathparse{#1-#2}%
+    \xdef\dropval{\pgfmathresult}%
+    % Clamp drop to the interval [#3,#4]:
+    \ifdimcomp{\dropval pt}{<}{#3 pt}{\def\dropval{#3}}{}%
+    \ifdimcomp{\dropval pt}{>}{#4 pt}{\def\dropval{#4}}{}%
+    % Map drop value to a percentage from 0 to 100
+    \pgfmathparse{int(round(100*((\dropval - #3)/(#4-#3))))}%
+    \xdef\tempgrad{\pgfmathresult}%
+    % Use \cellcolor with a mix from low color to high color.
+    % If drop is 0 the background is low color (white); if drop is max then high color (red).
+    \cellcolor{#6!\tempgrad!#5!#7}{\ifnum #8=1\bfseries\fi #2}%
+}

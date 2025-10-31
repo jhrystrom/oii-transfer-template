@@ -1,0 +1,161 @@
+% ============================================
+% macros.tex — custom LaTeX macros for the thesis
+% ============================================
+
+% Load required package
+
+\usepackage{fontawesome} % for \faQuestionCircle
+\usepackage[most]{tcolorbox}
+\usepackage{tikz} % For fake figures
+% ------------------------------------------------
+% Task checkbox command
+% Usage: \task{<status>}{<text>}
+% ------------------------------------------------
+\usepackage{xifthen} % allows conditional tests
+
+\newcommand{\task}[2]{%
+  \ifthenelse{\equal{#1}{check} \OR \equal{#1}{checked} \OR \equal{#1}{true}}%
+    {$\text{\rlap{$\checkmark$}}\square$~#2}% checked box
+    {$\square$~#2}% empty box
+}
+\newcommand{\done}[1]{\task{check}{#1}}
+\newcommand{\todo}[1]{\task{empty}{#1}}
+
+
+
+% ------------------------------------------------
+% Task list environment
+% Usage:
+% \tasklist{
+%   \task{check}{Item 1}
+%   \task{empty}{Item 2}
+% }
+% ------------------------------------------------
+\newcommand{\tasklist}[1]{%
+  \begin{tabular}[t]{@{}l@{}} % keeps alignment tidy inside tables
+  #1
+  \end{tabular}%
+}
+
+
+
+
+
+% Colours
+\definecolor{researchaim}{HTML}{E3F2D9}
+
+
+
+
+% Define a reusable box environment
+\newtcolorbox{researchbox}[1][]{
+  colback=blue!5,
+  colframe=black!80,
+  fonttitle=\bfseries,
+  rounded corners,
+  enhanced,
+  breakable,
+  attach boxed title to top center={yshift=-2mm},
+  boxed title style={colback=blue!80},
+  title=#1
+}
+
+% ------------------------------------------------
+% Secondary Research Question (numbered, soft box)
+% ------------------------------------------------
+\newcommand{\researchquestion}[2]{%
+  \begin{tcolorbox}[
+    colback=gray!10,
+    colframe=gray!10, % same as background → invisible border
+    boxrule=0mm,
+    arc=1.5mm,
+    left=2mm,
+    right=2mm,
+    top=1mm,
+    bottom=1mm,
+    enhanced,
+    breakable
+  ]
+    {\fontsize{12}{20}\selectfont \faQuestionCircle}\hspace{2mm}%
+    \textbf{RQ~#1}: \textit{#2}
+  \end{tcolorbox}%
+}
+
+% ------------------------------------------------
+% Main Research Question (un-numbered, emphasized box)
+% ------------------------------------------------
+\newcommand{\mainresearchquestion}[1]{%
+  \begin{tcolorbox}[
+    colback=gray!5,
+    colframe=black,
+    boxrule=0.8mm,
+    arc=1.5mm,
+    left=2mm,
+    right=2mm,
+    top=2mm,
+    bottom=2mm,
+    enhanced,
+    breakable
+  ]
+    {\fontsize{14}{22}\selectfont \faQuestionCircle}\hspace{2mm}%
+    \textbf{Research Question:} \textit{#1}
+  \end{tcolorbox}%
+}
+
+
+% --- Core Contributions box ---
+\newcommand{\contributionbox}[1]{%
+  \begin{tcolorbox}[
+    colback=violet!10!white,
+    colframe=violet!75!black,
+    boxrule=0.8mm,      % Thickness of the frame
+    arc=2mm,            % Corner rounding
+    left=1mm,           % Left padding
+    right=1mm,          % Right padding
+    top=1mm,            % Top padding
+    bottom=1mm          % Bottom padding
+  ]
+    {\fontsize{10}{20}\selectfont \faLightbulbO}\hspace{2mm}~
+    #1
+  \end{tcolorbox}%
+}
+
+
+% --- Core Research Aim box ---
+\newcommand{\coreaim}[1]{%
+  \begin{tcolorbox}[
+    colback=researchaim,
+    colframe=black,
+    boxrule=0.6mm,
+    arc=1.5mm,
+    left=2mm,
+    right=2mm,
+    top=2mm,
+    bottom=2mm
+  ]
+    {\fontsize{16}{22}\selectfont \faPiedPiperAlt}\hspace{2mm}
+    \textbf{Core Research Aim}: \textit{#1}
+  \end{tcolorbox}%
+}
+
+
+\newcommand{\fakeimage}[2][]{%
+  \begin{tikzpicture}[baseline=(img.base)]
+    \node[inner sep=0] (img) {\includegraphics[#1]{#2}};
+    % Overlay watermark (smaller scale to reduce vertical footprint)
+    \node[rotate=30, text opacity=0.2, scale=2, text=red] at (img.center) {\smash{FAKE DATA}};
+  \end{tikzpicture}%
+}
+
+
+% REFERENCES
+\newcommand{\figref}[1]{Fig.~\ref{#1}} % Figures
+\newcommand{\Figref}[1]{Fig.~\ref{#1}} % Figures
+\newcommand{\secref}[1]{§~\ref{#1}} % Sections
+
+
+% Names
+\newcommand{\weberbench}{\textsc{WeberBench}\xspace}
+\newcommand{\fairensemble}{\textsc{OxEnsemble}\xspace}
+\newcommand{\FairEnsemble}{\textsc{OxEnsemble}\xspace}
+
